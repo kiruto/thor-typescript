@@ -32,17 +32,17 @@ function curl(method: string, url: string, data: any,
     let xhr = new XMLHttpRequest();
 
     function onload() {
-        let date = xhr.getResponseHeader("date");
+        let date = xhr.getResponseHeader("Date");
         if (date !== null) {
             offset.update(new Date(date))
         }
 
         if (xhr.status >= 500) {
             if (reject) {
-                reject.call(xhr.responseText)
+                reject(xhr.responseText)
             }
         } else {
-            resolve.call(new ResponseResult(xhr.status, xhr.responseText))
+            resolve(new ResponseResult(xhr.status, xhr.responseText))
         }
     }
 

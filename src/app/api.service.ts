@@ -9,11 +9,14 @@ const crypto = new ThorEncrypt(ENV.aes_key);
 export class CommentApi {
     static view(id: number) {
         let params = new Map<string, string>();
-        params.set("id", "2");
+        params.set("id", id.toString());
         return http.get("/id", params)
             .then(rv => {
-                let content = crypto.decrypt(rv);
-                return JSON.parse(content) as Comment
+                return createComment(rv);
             })
     }
+}
+
+function createComment(json: string): Comment {
+    return JSON.parse(crypto.decrypt(json)) as Comment
 }

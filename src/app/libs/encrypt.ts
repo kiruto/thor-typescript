@@ -58,6 +58,8 @@ export class ThorEncrypt {
         let cipher = CryptoJS.lib.CipherParams.create({
             ciphertext: CryptoJS.enc.Base64.parse(c)
         });
-        return AES.decrypt(cipher, this.key, {iv: iv, mode: CryptoJS.mode.CFB}).toString(CryptoJS.enc.Utf8);
+        return AES
+            .decrypt(cipher, this.key, {iv: iv, mode: CryptoJS.mode.CFB, padding: CryptoJS.pad.NoPadding})
+            .toString(CryptoJS.enc.Utf8);
     }
 }

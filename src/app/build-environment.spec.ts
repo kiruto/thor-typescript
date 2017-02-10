@@ -10,8 +10,5 @@ describe("Check environment", () => {
         expect(ENV).not.toBeNull();
         expect(IN_DEBUG).not.toBeNull();
         expect(VERSION).not.toBeNull();
-        console.log(ENV);
-        console.log(IN_DEBUG);
-        console.log(VERSION);
     });
 });
