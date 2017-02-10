@@ -67,11 +67,66 @@ function curl(method: string, url: string, data: any,
 export class ThorHttp {
     constructor(private endpoint: string) {}
 
-    get(url: String, params: Map<string, string> = null,
+    get(url: string, params: Map<string, string> = null,
         onSuccess: (body: ResponseResult) => void = null, onError: (err: string) => void = null) {
         let deferred = defer<string>();
 
         curl("GET", params? `${this.endpoint}${url}?${this.qs(params)}`: `${this.endpoint}${url}`, null, rv => {
+            if (onSuccess) {
+                onSuccess(rv);
+            }
+            if (rv.status >= 200 && rv.status < 300) {
+                deferred.resolve(rv.body)
+            } else if (rv.status >= 400 && rv.status < 500) {
+                deferred.reject(rv.body)
+            }
+        }, err => {
+            if (onError) {
+                onError(err)
+            }
+        });
+        return deferred.toPromise()
+    }
+
+    post(url: string, data: string = null,
+         onSuccess: (body: ResponseResult) => void = null, onError: (err: string) => void = null) {
+        let deferred = defer<string>();
+
+        curl("POST", `${this.endpoint}${url}`, data, rv => {
+            if (onSuccess) { onSuccess(rv) }
+            if (rv.status >= 200 && rv.status < 300) {
+                deferred.resolve(rv.body);
+            } else {
+                deferred.reject(rv.body);
+            }
+        }, err => {
+            if (onError) { onError(err) }
+        });
+        return deferred.toPromise();
+    }
+
+    put(url: string, data: string = null,
+        onSuccess: (body: ResponseResult) => void = null, onError: (err: string) => void = null) {
+        let deferred = defer<string>();
+
+        curl("PUT", `${this.endpoint}${url}`, data, rv => {
+            if (onSuccess) { onSuccess(rv) }
+            if (rv.status >= 200 && rv.status < 300) {
+                deferred.resolve(rv.body);
+            } else {
+                deferred.reject(rv.body);
+            }
+        }, err => {
+            if (onError) { onError(err) }
+        });
+        return deferred.toPromise();
+    }
+
+    delete(url: string, params: Map<string, string> = null,
+           onSuccess: (body: ResponseResult) => void = null, onError: (err: string) => void = null) {
+        let deferred = defer<string>();
+
+        curl("DELETE", params? `${this.endpoint}${url}?${this.qs(params)}`: `${this.endpoint}${url}`, null, rv => {
             if (onSuccess) {
                 onSuccess(rv);
             }

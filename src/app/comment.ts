@@ -16,3 +16,20 @@ export interface Comment {
     hiddenReplies: number
     replies: Comment[]
 }
+
+export interface PendingComment {
+    uri: string
+    title: string
+    text: string
+    author: string
+    email: string
+    website: string
+    parent: number
+}
+
+export interface CreateCommentResult {
+    id: number
+    comment: Comment
+    ip: string
+    token: string
+}
